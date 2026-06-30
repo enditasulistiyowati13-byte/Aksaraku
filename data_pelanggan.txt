@@ -1,0 +1,191 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+struct Buku {
+    string id;
+    string judul;
+    string kategori;
+    int harga;
+    int stok;
+};
+
+Buku daftarBuku[5];
+int jumlahBuku = 3;
+
+// ================= DATA AWAL =================
+void isiData() {
+    daftarBuku[0].id = "B001";
+    daftarBuku[0].judul = "Laskar Pelangi";
+    daftarBuku[0].kategori = "Novel";
+    daftarBuku[0].harga = 85000;
+    daftarBuku[0].stok = 10;
+
+    daftarBuku[1].id = "B002";
+    daftarBuku[1].judul = "Bumi";
+    daftarBuku[1].kategori = "Fantasi";
+    daftarBuku[1].harga = 90000;
+    daftarBuku[1].stok = 5;
+
+    daftarBuku[2].id = "B003";
+    daftarBuku[2].judul = "Atomic Habits";
+    daftarBuku[2].kategori = "Motivasi";
+    daftarBuku[2].harga = 120000;
+    daftarBuku[2].stok = 12;
+
+}
+
+// ================= REKURSIF =================
+void tampilBuku(int i) {
+    if (i >= jumlahBuku)
+        return;
+
+    cout << "\nID Buku   : " << daftarBuku[i].id << endl;
+    cout << "Judul     : " << daftarBuku[i].judul << endl;
+    cout << "Kategori  : " << daftarBuku[i].kategori << endl;
+    cout << "Harga     : " << daftarBuku[i].harga << endl;
+    cout << "Stok      : " << daftarBuku[i].stok << endl;
+
+    tampilBuku(i + 1);
+}
+
+// ================= CARI BUKU =================
+void cariBuku() {
+    string cari;
+    bool ketemu = false;
+
+    cout << "\nMasukkan judul buku: ";
+    getline(cin, cari);
+
+    for (int i = 0; i < jumlahBuku; i++) {
+        if (cari == daftarBuku[i].judul) {
+
+            cout << "\nBuku ditemukan!\n";
+            cout << "ID Buku   : " << daftarBuku[i].id << endl;
+            cout << "Judul     : " << daftarBuku[i].judul << endl;
+            cout << "Kategori  : " << daftarBuku[i].kategori << endl;
+            cout << "Harga     : " << daftarBuku[i].harga << endl;
+            cout << "Stok      : " << daftarBuku[i].stok << endl;
+
+            ketemu = true;
+        }
+    }
+
+    if (!ketemu) {
+        cout << "Buku tidak ditemukan!\n";
+    }
+}
+
+// ================= BELI BUKU =================
+void beliBuku() {
+    string idCari;
+    int jumlahBeli;
+    bool ketemu = false;
+
+    cout << "\nMasukkan ID buku: ";
+    getline(cin, idCari);
+
+    for (int i = 0; i < jumlahBuku; i++) {
+
+        if (idCari == daftarBuku[i].id) {
+
+            ketemu = true;
+
+            cout << "Judul Buku : " << daftarBuku[i].judul << endl;
+            cout << "Harga      : " << daftarBuku[i].harga << endl;
+            cout << "Stok       : " << daftarBuku[i].stok << endl;
+
+            cout << "Jumlah beli: ";
+            cin >> jumlahBeli;
+            cin.ignore();
+
+            if (jumlahBeli <= daftarBuku[i].stok) {
+
+                int total = jumlahBeli * daftarBuku[i].harga;
+
+                daftarBuku[i].stok -= jumlahBeli;
+
+                cout << "\nPembelian berhasil!\n";
+                cout << "Total bayar : " << total << endl;
+
+            } else {
+                cout << "Stok tidak cukup!\n";
+            }
+        }
+    }
+
+    if (!ketemu) {
+        cout << "ID buku tidak ditemukan!\n";
+    }
+}
+
+bool login() {
+
+    string username, password;
+
+    cout << "\n===== LOGIN PELANGGAN =====\n";
+
+    cout << "Username : ";
+    getline(cin, username);
+
+    cout << "Password : ";
+    getline(cin, password);
+
+    if (username == "pelanggan" && password == "123") {
+
+        cout << "\nLogin berhasil!\n";
+        return true;
+
+    } else {
+
+        cout << "\nUsername atau password salah!\n";
+        return false;
+    }
+}
+
+// ================= MAIN =================
+int main() {
+
+    isiData();
+    if (!login()) {
+    return 0;
+}
+
+    int pilih;
+
+    do {
+
+        cout << "\n===== MENU PELANGGAN =====\n";
+        cout << "1. Lihat Buku\n";
+        cout << "2. Cari Buku\n";
+        cout << "3. Beli Buku\n";
+        cout << "4. Keluar\n";
+        cout << "Pilih menu : ";
+        cin >> pilih;
+        cin.ignore();
+
+        if (pilih == 1) {
+
+            tampilBuku(0);
+
+        } else if (pilih == 2) {
+
+            cariBuku();
+
+        } else if (pilih == 3) {
+
+            beliBuku();
+
+        } else if (pilih == 4) {
+
+            cout << "Terima kasih!\n";
+
+        } else {
+
+            cout << "Menu tidak tersedia!\n";
+        }
+
+    } while (pilih != 4);
+
+    return 0;
+}
